@@ -14,6 +14,7 @@ namespace kCores
         public int Degree => _neighbours.Count;
 
         public bool IsVisited { get; set; }
+        public bool IsIsolated => _neighbours.Count == 0;
 
         public Vertice(int id, Point point)
         {

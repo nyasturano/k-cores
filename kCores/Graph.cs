@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace kCores
 {
@@ -9,8 +10,10 @@ namespace kCores
         private List<Vertice> _vertices = new List<Vertice>();
 
         public int VerticesCount => _vertices.Count;
-        public int EdgesCount => Edges(_vertices);
-       
+        public int EdgesCount => CalculateEdges(_vertices);
+        public int ComponentsCount => ComponentsInfo().Count;
+
+
         public Graph(Metrics metrics, double radius = double.PositiveInfinity)
         {
             _radius = radius;
@@ -93,8 +96,9 @@ namespace kCores
         }
 
 
+        #region СВОЙСТВА
         // количество ребер
-        public int Edges(List<Vertice> vertices)
+        public int CalculateEdges(List<Vertice> vertices)
         {
             int count = 0;
 
@@ -105,6 +109,23 @@ namespace kCores
 
             return count / 2;
         }
+
+        // количество изолированных вершин
+        public int CalculateIsolated()
+        {
+            int count = 0;
+
+            foreach(Vertice vertice in _vertices)
+            {
+                if (vertice.IsIsolated)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+        #endregion
 
 
         // генерация случайного геометрического графа
@@ -175,7 +196,7 @@ namespace kCores
 
             foreach (List<Vertice> c in components)
             {
-                Console.WriteLine($"COMPONENT | n = {c.Count}, m = {Edges(c)}");
+                Console.WriteLine($"COMPONENT | n = {c.Count}, m = {CalculateEdges(c)}");
             }
 
             Console.WriteLine("\n");

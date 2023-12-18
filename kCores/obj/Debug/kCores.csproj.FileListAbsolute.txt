@@ -1,0 +1,8 @@
+C:\Users\fedan\source\repos\kCores\kCores\bin\Debug\kCores.exe.config
+C:\Users\fedan\source\repos\kCores\kCores\bin\Debug\kCores.exe
+C:\Users\fedan\source\repos\kCores\kCores\bin\Debug\kCores.pdb
+C:\Users\fedan\source\repos\kCores\kCores\obj\Debug\kCores.csproj.AssemblyReference.cache
+C:\Users\fedan\source\repos\kCores\kCores\obj\Debug\kCores.csproj.SuggestedBindingRedirects.cache
+C:\Users\fedan\source\repos\kCores\kCores\obj\Debug\kCores.csproj.CoreCompileInputs.cache
+C:\Users\fedan\source\repos\kCores\kCores\obj\Debug\kCores.exe
+C:\Users\fedan\source\repos\kCores\kCores\obj\Debug\kCores.pdb
