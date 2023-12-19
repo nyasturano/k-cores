@@ -12,6 +12,7 @@ namespace kCores
         public int VerticesCount => _vertices.Count;
         public int EdgesCount => CalculateEdges(_vertices);
         public int ComponentsCount => ComponentsInfo().Count;
+        public int IsolatedCount => CalculateIsolated();
 
 
         public Graph(Metrics metrics, double radius = double.PositiveInfinity)

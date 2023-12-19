@@ -30,17 +30,17 @@ namespace kCores
             Cycle("vertices", 50, 10, 30, 10, g => g.VerticesCount);
             Cycle("edges", 50, 10, 30, 10, g => g.EdgesCount);
             Cycle("components", 50, 10, 30, 10, g => g.ComponentsCount);
-            Cycle("isolated", 50, 10, 30, 10, g => g.CalculateIsolated());
+            Cycle("isolated", 50, 10, 30, 10, g => g.IsolatedCount);
 
             Cycle("vertices", 100, 20, 60, 10, g => g.VerticesCount);
             Cycle("edges", 100, 20, 60, 10, g => g.EdgesCount);
             Cycle("components", 100, 20, 60, 10, g => g.ComponentsCount);
-            Cycle("isolated", 100, 20, 60, 10, g => g.CalculateIsolated());
+            Cycle("isolated", 100, 20, 60, 10, g => g.IsolatedCount);
 
             Cycle("vertices", 200, 50, 150, 40, g => g.VerticesCount);
             Cycle("edges", 200, 50, 150, 40, g => g.EdgesCount);
             Cycle("components", 200, 50, 150, 40, g => g.ComponentsCount);
-            Cycle("isolated", 200, 50, 150, 40, g => g.CalculateIsolated());
+            Cycle("isolated", 200, 50, 150, 40, g => g.IsolatedCount);
         }
 
 
