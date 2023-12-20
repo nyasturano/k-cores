@@ -6,15 +6,8 @@ namespace kCores
     public class Program
     {
         private static readonly EuclidianMetrics metrics = new EuclidianMetrics();
-
         
         private static readonly string dir = AppDomain.CurrentDomain.BaseDirectory + "/data/";
-
-        private static readonly double exp = 1000d;
-
-        private static  readonly double rMin = 2.0d;
-        private static readonly double rMax = 8.0d;
-        private static readonly double rStep = 0.5d;
 
         private static readonly int boundX = 10;
         private static readonly int boundY = 10;
@@ -27,66 +20,128 @@ namespace kCores
                 Directory.CreateDirectory(dir);
             }
 
-            Cycle("vertices", 50, 10, 30, 10, g => g.VerticesCount);
-            Cycle("edges", 50, 10, 30, 10, g => g.EdgesCount);
-            Cycle("components", 50, 10, 30, 10, g => g.ComponentsCount);
-            Cycle("isolated", 50, 10, 30, 10, g => g.IsolatedCount);
 
-            Cycle("vertices", 100, 20, 60, 10, g => g.VerticesCount);
-            Cycle("edges", 100, 20, 60, 10, g => g.EdgesCount);
-            Cycle("components", 100, 20, 60, 10, g => g.ComponentsCount);
-            Cycle("isolated", 100, 20, 60, 10, g => g.IsolatedCount);
+            // PropertyRelationOfK("vertices", 50, Range(0, 10, 1), Range(1.0, 3.0, 0.5), g => g.VerticesCount);
+            PropertyRelationOfR("edges", 50, Range(0, 10, 1), Range(1.0, 3.0, 0.5), g => g.EdgesCount);
+            // PropertyRelationOfR("components", 50, Range(1, 6, 1), Range(0, 3.0, 0.2), g => g.ComponentsCount);
+            
+            
+            // PropertyRelationOfK("components", 200, Range(1, 10, 1), Range(0.3, 2.4, 0.3), g => g.ComponentsCount);
+            // PropertyRelationOfK("vertices", 100, Range(1, 10, 1), Range(0.3, 2.4, 0.3), g => g.VerticesCount);
 
-            Cycle("vertices", 200, 50, 150, 40, g => g.VerticesCount);
-            Cycle("edges", 200, 50, 150, 40, g => g.EdgesCount);
-            Cycle("components", 200, 50, 150, 40, g => g.ComponentsCount);
-            Cycle("isolated", 200, 50, 150, 40, g => g.IsolatedCount);
         }
 
-
-        static void Cycle(string property, int n, int kMin, int kMax, int kStep, Func<Graph, int> propertyFunc)
+        static double[] Range(double min, double max, double step)
         {
-            Console.WriteLine(property);
+            double[] values = new double[(int)((max - min) / step) + 1];
 
-            string filePath = dir + $"n{n}_{property}.csv";
+            int i = 0;
+
+            for (double k = min; k < max + step; k += step, i++)
+            {
+                values[i] = k;
+            }
+
+            return values;
+        }
+
+        static int[] Range(int min, int max, int step)
+        {
+            int[] values = new int[(max - min) / step + 1];
+
+            int i = 0;
+
+            for (int k = min; k <= max; k += step, i++)
+            {
+                values[i] = k;
+            }
+
+            return values;
+        }
+
+        static void PropertyRelationOfR(string property, int n, int[] k, double[] r, Func<Graph, int> propertyFunc)
+        {
+            Console.WriteLine($"{property} relation of r");
+
+            string filePath = dir + $"{property}_r_n{n}.csv";
 
             string result = "r;";
 
-            for (int k = kMin; k <= kMax; k += kStep)
+            for (int i = 0; i < k.Length; i++)
             {
-                result += $"k={k};";
+                result += $"k = {k[i]};";
             }
 
-            result += "\n";
+            result += '\n';
 
-            for (double r = rMin; r <= rMax; r += rStep)
+            for (int i = 0; i < r.Length; i++)
             {
-                Console.WriteLine(r);
+                Console.WriteLine($"r = {r[i]}");
 
-                result += $"{r};";
+                result += $"{r[i]};";
 
-                double sum = 0;
-
-                for (int k = kMin; k <= kMax; k += kStep)
+                for (int j = 0; j < k.Length; j++)
                 {
-                    for (int e = 0; e < exp; e++)
-                    {
-                        Graph g = new Graph(metrics, r);
-                        g.Generate(n, boundX, boundY);
-                        g.K_Core(k);
-
-                        sum += propertyFunc(g);
-                    }
-
-                    sum /= exp;
-
-                    result += $"{Math.Round(sum)};";
+                    result += $"{PropertyAverageValue(n, k[j], r[i], propertyFunc)};";
                 }
 
-                result += "\n";
+                result += '\n';
             }
 
             File.WriteAllText(filePath, result);
         }
+
+        static void PropertyRelationOfK(string property, int n, int[] k, double[] r, Func<Graph, int> propertyFunc)
+        {
+            Console.WriteLine($"{property} relation of k");
+
+            string filePath = dir + $"{property}_k_n{n}.csv";
+
+            string result = "k;";
+
+            for (int i = 0; i < r.Length; i++)
+            {
+                result += $"r = {r[i]};";
+            }
+
+            result += '\n';
+
+            for (int i = 0; i < k.Length; i++)
+            {
+                Console.WriteLine($"k = {k[i]}");
+
+                result += $"{k[i]};";
+
+                for (int j = 0; j < r.Length; j++)
+                {
+                    result += $"{PropertyAverageValue(n, k[i], r[j], propertyFunc)};";
+                }
+
+                result += '\n';
+            }
+
+            File.WriteAllText(filePath, result);
+
+        }
+
+        static double PropertyAverageValue(int n, int k, double r, Func<Graph, int> propertyFunc)
+        {
+            int exp = 1000;
+            double sum = 0;
+            
+            Graph g = new Graph(metrics, r);
+
+            for (int e = 0; e < exp; e++)
+            {
+                g.Generate(n, boundX, boundY);
+                g.K_Core(k);
+
+                sum += propertyFunc(g);
+            }
+
+
+            return Math.Round(sum / exp);
+        }
     }
 }
+
