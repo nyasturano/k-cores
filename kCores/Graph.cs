@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace kCores
 {
@@ -12,8 +11,6 @@ namespace kCores
         public int VerticesCount => _vertices.Count;
         public int EdgesCount => CalculateEdges(_vertices);
         public int ComponentsCount => ComponentsInfo().Count;
-        public int IsolatedCount => CalculateIsolated();
-
 
         public Graph(Metrics metrics, double radius = double.PositiveInfinity)
         {
@@ -36,7 +33,6 @@ namespace kCores
                 }
             }
         }
-
 
         // добавление вершины в граф
         private bool AddVertice(Vertice vertice)
@@ -96,8 +92,6 @@ namespace kCores
             return components;
         }
 
-
-        #region СВОЙСТВА
         // количество ребер
         public int CalculateEdges(List<Vertice> vertices)
         {
@@ -111,24 +105,7 @@ namespace kCores
             return count / 2;
         }
 
-        // количество изолированных вершин
-        public int CalculateIsolated()
-        {
-            int count = 0;
-
-            foreach(Vertice vertice in _vertices)
-            {
-                if (vertice.IsIsolated)
-                {
-                    count++;
-                }
-            }
-
-            return count;
-        }
-        #endregion
-
-
+      
         // генерация случайного геометрического графа
         public void Generate(int verticesCount, int boundX, int boundY)
         {
@@ -141,7 +118,7 @@ namespace kCores
 
                 while (!isVertexAdded)
                 { 
-                    Vertice vertice = new Vertice(i, Point.RandomPoint(boundX, boundY));
+                    Vertice vertice = new Vertice(Point.RandomPoint(boundX, boundY));
                     isVertexAdded = AddVertice(vertice);
                 }
             }
@@ -172,35 +149,6 @@ namespace kCores
                 }
             } while (deleted.Count > 0);
 
-        }
-
-
-        // для отладки
-        public void Log()
-        {
-            Console.WriteLine("-- GRAPH -- ");
-
-            Console.WriteLine($"n = {VerticesCount}");
-            Console.WriteLine($"m = {EdgesCount}");
-            Console.WriteLine($"r = {_radius}");
-
-            Console.WriteLine();
-
-            foreach (Vertice v in _vertices)
-            {
-                Console.WriteLine($"VERTICE [{v.ID}] | x = {v.Point.X}, y = {v.Point.Y}, deg = {v.Degree}");
-            }
-
-            List<List<Vertice>> components = ComponentsInfo();
-
-            Console.WriteLine($"\nComponents count = {components.Count}\n");
-
-            foreach (List<Vertice> c in components)
-            {
-                Console.WriteLine($"COMPONENT | n = {c.Count}, m = {CalculateEdges(c)}");
-            }
-
-            Console.WriteLine("\n");
         }
     }
 }

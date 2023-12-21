@@ -121,7 +121,6 @@ namespace kCores
             }
 
             File.WriteAllText(filePath, result);
-
         }
 
         static double PropertyAverageValue(int n, int k, double r, Func<Graph, int> propertyFunc)

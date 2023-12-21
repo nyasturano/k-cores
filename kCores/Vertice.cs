@@ -4,24 +4,16 @@ namespace kCores
 {
     public class Vertice
     {
-        private int _id;
         private Point _point;
         private List<Vertice> _neighbours = new List<Vertice>();
 
-        #region PROPERTIES
-
-        public int ID => _id;
-        public int Degree => _neighbours.Count;
-        public bool IsVisited { get; set; }
-        public bool IsIsolated => _neighbours.Count == 0;
         public Point Point => _point;
         public List<Vertice> Neighbours => _neighbours;
+        public int Degree => _neighbours.Count;
+        public bool IsVisited { get; set; }
 
-        #endregion
-
-        public Vertice(int id, Point point)
+        public Vertice(Point point)
         {
-            _id = id;
             _point = point;
         }
 
